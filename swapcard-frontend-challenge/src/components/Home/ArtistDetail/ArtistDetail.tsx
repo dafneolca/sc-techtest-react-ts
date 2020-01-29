@@ -2,17 +2,18 @@ import React from 'react';
 import './ArtistDetail.css';
 
 
-class ArtistDetail extends React.Component<any>{
-  render() {
-    console.log(this.props)
-    return (
-      <div className="Artist">
-        <h1>ARTIST IS HERE</h1>
-        {/* <h1>{this.props.name}</h1> */}
-      </div>
-    )
-  }
+const artistDetail = (props: any) => {
+
+  console.log(props)
+  return (
+    <div className="Artist">
+      <h1>{props.name}</h1>
+      <p>favoite? {props.favorite}</p>
+    </div>
+  )
+
 }
 
 
-export default ArtistDetail;
+export default artistDetail;
+
