@@ -1,0 +1,8 @@
+.Artist {
+  width: 330px;
+  /* display: flex; */
+  justify-content: center;
+  border: 10px solid black;
+  padding: 20px;
+  margin: 20px;
+}
