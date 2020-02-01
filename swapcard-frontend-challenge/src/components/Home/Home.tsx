@@ -1,7 +1,13 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 
 import './Home.css';
 import Artists from './Artists/Artists';
+import FullArtistProfile from './FullArtistProfile/FullArtistProfile';
+import { Breadcrumbs } from '@material-ui/core';
+
+import Sidebar from './Sidebar/Sidebar';
+
 
 
 class Home extends React.Component {
@@ -16,23 +22,43 @@ class Home extends React.Component {
     this.setState({ userSearch: searchResult });
   }
 
-  render() {
-    const welcomeScreen = (
-      <div>Hola que tal?</div>
-    )
+  // breadCrumbs = () => {
+  //   return (
+  //     <div>
+  //       <Breadcrumbs aria-label="breadcrumb">
+  //         <Link color="inherit" to="/">Home</Link>
+  //         <Link color="inherit" to="/getting-started/installation/">{this.state.userSearch}</Link>
+  //       </Breadcrumbs>
+  //     </div>
+  //   )
+  // }
 
-    const searchResult = <Artists userSearch={this.state.userSearch} />
-
+  searchResult = () => {
     return (
       <div>
+        <Artists userSearch={this.state.userSearch} />
+      </div>
+    )
+  }
+
+
+  welcomeScreen = () => {
+    return <div>Hola que tal?</div>
+  }
+
+  render() {
+    return (
+      <div>
+        <Sidebar />
         <div className="Container">
-          <h2>Search for an Artist 🚀</h2>
+          <h4>Search for an Artist 🚀</h4>
           <form onSubmit={this.newSearchHandler}>
             <input placeholder="Search for artist" ref="artist" />
-            <input type="submit" value="Find Artist" />
+            <input type="submit" value="Search" />
           </form>
         </div>
-        {this.state.userSearch !== '' ? searchResult : welcomeScreen}
+        <Route exact path="/" component={this.state.userSearch !== '' ? this.searchResult : this.welcomeScreen} />
+        <Route exact path="/:id" component={FullArtistProfile} />
       </div >
     )
   }

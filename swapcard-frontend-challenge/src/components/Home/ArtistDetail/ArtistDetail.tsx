@@ -3,12 +3,10 @@ import './ArtistDetail.css';
 
 
 const artistDetail = (props: any) => {
-
-  console.log(props)
   return (
     <div className="Artist">
       <h1>{props.name}</h1>
-      <p>favoite? {props.favorite}</p>
+      {props.favorite ? <p>favoite? </p> : <button onClick={props.clicked}>Make artist favorite</button>}
     </div>
   )
 

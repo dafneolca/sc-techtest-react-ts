@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import './Artists.css';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ArtistDetail from '../ArtistDetail/ArtistDetail';
+import FullArtistProfile from '../FullArtistProfile/FullArtistProfile'
 
 import ApolloClient, { gql } from 'apollo-boost';
-
-// import ApolloClient, { gql } from 'apollo-boost';
-// import { ApolloProvider } from '@apollo/react-hooks';
+import Grid from '@material-ui/core/Grid';
 
 interface ArtistProps {
   userSearch?: string;
@@ -56,23 +55,49 @@ class Artists extends React.Component<ArtistProps, ArtistState> {
     })
   }
 
+  selectArtistHandler(id: string) {
+    console.log('clicked')
+    console.log(id)
+  }
+
+  artistDetailView() {
+    return <FullArtistProfile />
+  }
 
   render() {
-    // TODO: ADD ROUTING AND SEPARATE ARTISTS ARRAY FROM ARTIST DETAIL
     let artistResults = this.state.artists.map((artist) => {
-      return <ArtistDetail key={artist['id']} name={artist['name']} />;
+      let id = artist['id']
+      let name = artist['name']
+      return (
+        <Link to={{ pathname: id, state: { name: name } }} key={id} >
+          <Grid container spacing={5}
+            direction="row"
+            justify="center"
+            alignItems="center">
+            <ArtistDetail
+              key={id}
+              id={id}
+              name={artist['name']}
+              {...this.props}
+              clicked={() => this.selectArtistHandler(id)} />
+          </Grid>
+        </Link>
+      )
     });
 
     return (
-      <section className="Posts">
-        {artistResults}
-      </section>
+      <div>
+        <h2>ALL ARTISTS</h2>
+        <section className="Posts">
+          {artistResults}
+        </section>
+
+        <Route exact path="/:id" component={FullArtistProfile} />
+        {/* <Route path="/:id" exact render={(props) => <FullArtistProfile {...this.props} />} /> */}
+        {/* <Route path="/:id" exact component={this.artistDetailView} {...this.props} /> */}
+      </div>
     );
   }
 }
-
-
-
-
 
 export default Artists;
