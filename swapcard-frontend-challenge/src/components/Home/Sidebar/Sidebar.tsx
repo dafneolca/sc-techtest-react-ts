@@ -8,6 +8,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { Link, Route } from 'react-router-dom';
+import FullArtistProfile from '../FullArtistProfile/FullArtistProfile';
 
 const useStyles = makeStyles({
   list: {
@@ -47,10 +49,12 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        {favoritesArray?.map((text: any, index: number) => (
-          <ListItem button key={text}>
-            <ListItemText primary={text} />
-          </ListItem>
+        {favoritesArray?.map((artist: any) => (
+          <Link to={{ pathname: artist.id, state: { name: artist.name } }} key={artist.id}>
+            <ListItem button key={artist.id}>
+              <ListItemText primary={artist.name} />
+            </ListItem>
+          </Link>
         ))}
       </List>
     </div>

@@ -8,13 +8,9 @@ import FullArtistProfile from '../FullArtistProfile/FullArtistProfile'
 import ApolloClient, { gql } from 'apollo-boost';
 import Grid from '@material-ui/core/Grid';
 
-interface ArtistProps {
-  userSearch?: string;
-}
+import Home from '../Home';
 
-interface ArtistState { }
-
-class Artists extends React.Component<ArtistProps, ArtistState> {
+class Artists extends React.Component<any, any> {
 
   state = {
     artists: [],
@@ -60,8 +56,10 @@ class Artists extends React.Component<ArtistProps, ArtistState> {
     console.log(id)
   }
 
-  artistDetailView() {
-    return <FullArtistProfile />
+  goBackHandler() {
+    console.log('go back handler')
+    console.log(this.props)
+    this.props.history.goBack()
   }
 
   render() {
@@ -69,32 +67,33 @@ class Artists extends React.Component<ArtistProps, ArtistState> {
       let id = artist['id']
       let name = artist['name']
       return (
-        <Link to={{ pathname: id, state: { name: name } }} key={id} >
-          <Grid container spacing={5}
-            direction="row"
-            justify="center"
-            alignItems="center">
+        <Grid container spacing={5}
+          direction="row"
+          justify="center"
+          alignItems="center"
+          key={id}>
+          <Link to={{ pathname: id, state: { name: name } }} key={id} >
             <ArtistDetail
               key={id}
               id={id}
               name={artist['name']}
               {...this.props}
               clicked={() => this.selectArtistHandler(id)} />
-          </Grid>
-        </Link>
+          </Link>
+        </Grid>
       )
     });
 
     return (
       <div>
-        <h2>ALL ARTISTS</h2>
+        <div onClick={this.props.clicked}>Back to Search</div>
+        <h3>Results for {this.state.userSearchResult}</h3>
         <section className="Posts">
           {artistResults}
+          <Switch>
+            <Route exact path="/:id" component={FullArtistProfile} />
+          </Switch>
         </section>
-
-        <Route exact path="/:id" component={FullArtistProfile} />
-        {/* <Route path="/:id" exact render={(props) => <FullArtistProfile {...this.props} />} /> */}
-        {/* <Route path="/:id" exact component={this.artistDetailView} {...this.props} /> */}
       </div>
     );
   }

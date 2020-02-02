@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import './Home.css';
 import Artists from './Artists/Artists';
@@ -10,17 +10,18 @@ import Sidebar from './Sidebar/Sidebar';
 
 
 
-class Home extends React.Component {
+class Home extends React.Component<any, any> {
 
   state = {
     userSearch: '',
   }
 
   newSearchHandler = (event: any) => {
-    event.preventDefault();
+    // event.preventDefault();
     const searchResult = event.target.children[0].value
     this.setState({ userSearch: searchResult });
   }
+
 
   // breadCrumbs = () => {
   //   return (
@@ -33,36 +34,60 @@ class Home extends React.Component {
   //   )
   // }
 
-  searchResult = () => {
+  searchInput = () => {
+    return (
+      <form onSubmit={this.newSearchHandler}>
+        <input placeholder="Search for artist" />
+        <input type="submit" value="Search" />
+      </form>
+    )
+  }
+
+  introScreen = () => {
     return (
       <div>
-        <Artists userSearch={this.state.userSearch} />
+        <h4>Search for an Artist 🚀</h4>
+        <form onSubmit={this.newSearchHandler}>
+          <input placeholder="Search for artist" />
+          <input type="submit" value="Search" />
+        </form>
       </div>
     )
   }
 
+  resetSearchHandler = () => {
+    this.setState({ userSearch: '' })
+  }
+
+  searchResult = () => {
+    return <Artists userSearch={this.state.userSearch} {...this.props} clicked={() => this.resetSearchHandler()} />
+  }
 
   welcomeScreen = () => {
-    return <div>Hola que tal?</div>
+    return (
+      <div>
+        <h4>Search for an Artist 🚀</h4>
+        <form onSubmit={this.newSearchHandler}>
+          <input placeholder="Search for artist" />
+          <input type="submit" value="Search" />
+        </form>
+        <p>Get info on your favorite artists</p>
+      </div>
+    )
   }
 
   render() {
     return (
       <div>
         <Sidebar />
-        <div className="Container">
-          <h4>Search for an Artist 🚀</h4>
-          <form onSubmit={this.newSearchHandler}>
-            <input placeholder="Search for artist" ref="artist" />
-            <input type="submit" value="Search" />
-          </form>
-        </div>
-        <Route exact path="/" component={this.state.userSearch !== '' ? this.searchResult : this.welcomeScreen} />
-        <Route exact path="/:id" component={FullArtistProfile} />
+        <Switch>
+          <Route exact path="/" component={this.state.userSearch !== '' ? this.searchResult : this.welcomeScreen} />
+          <Route exact path="/:id" component={FullArtistProfile} click={this.resetSearchHandler} />
+        </Switch>
       </div >
     )
   }
 }
 
-export default Home;
+export default withRouter(Home);
 
