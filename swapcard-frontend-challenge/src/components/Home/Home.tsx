@@ -30,7 +30,7 @@ class Home extends React.Component<any, any> {
   introScreen = () => {
     return (
       <div>
-        <h4>Search for an Artist 🚀</h4>
+        <h4>Search for an Artist <span role="img" aria-label="rocket">🚀</span></h4>
         <form onSubmit={this.newSearchHandler}>
           <input placeholder="Search for artist" />
           <input type="submit" value="Search" />
@@ -50,7 +50,7 @@ class Home extends React.Component<any, any> {
   welcomeScreen = () => {
     return (
       <div>
-        <h4>Search for an Artist 🚀</h4>
+        <h4>Search for an Artist <span role="img" aria-label="rocket">🚀</span></h4>
         <form onSubmit={this.newSearchHandler}>
           <input placeholder="Search for artist" />
           <input type="submit" value="Search" />
@@ -89,10 +89,12 @@ class Home extends React.Component<any, any> {
       <div>
         {breadCrumbs}
         <Sidebar />
-        <Switch>
-          <Route exact path="/" component={this.state.userSearch !== '' ? this.searchResult : this.welcomeScreen} />
-          <Route exact path="/:id" component={FullArtistProfile} click={this.resetSearchHandler} />
-        </Switch>
+        <div className='mainContent'>
+          <Switch>
+            <Route exact path="/" component={this.state.userSearch !== '' ? this.searchResult : this.welcomeScreen} />
+            <Route exact path="/:id" component={FullArtistProfile} click={this.resetSearchHandler} />
+          </Switch>
+        </div>
       </div >
     )
   }

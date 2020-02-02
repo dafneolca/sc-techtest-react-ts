@@ -1,0 +1,14 @@
+.artistOptions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.favoriteToggleBtn {
+  width: 245px;
+  margin: 15px 0 !important;
+}
+
+.center {
+  text-align: 'center';
+}

@@ -1,9 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import ApolloClient, { gql } from 'apollo-boost';
 import Home from '../Home';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { red } from '@material-ui/core/colors';
+import Button from '@material-ui/core/Button';
+import './FullArtistProfile.css';
 
 
 
@@ -11,7 +13,7 @@ class FullArtistProfile extends React.Component<any, any> {
 
   state = {
     artist: null,
-    favorite: false,
+    favorite: null,
     id: null
   }
 
@@ -20,10 +22,11 @@ class FullArtistProfile extends React.Component<any, any> {
   });
 
   componentDidMount() {
+    console.log(this.state)
     this.setState({
       artist: this.props.location.state.name,
       id: this.props.match.params.id,
-      favorite: false
+      // favorite: false
     })
     const artist = this.props.location.state.name;
     if (this.state.artist) {
@@ -48,7 +51,6 @@ class FullArtistProfile extends React.Component<any, any> {
     }).then(res => {
       const artists = res.data.search.artists.nodes;
       const updatedSearchResults = artists.map((artist: any) => {
-        artist.favorite = false;
         return artist;
       })
       this.setState({ artists: updatedSearchResults })
@@ -56,7 +58,6 @@ class FullArtistProfile extends React.Component<any, any> {
   }
 
   setFavoriteHandler() {
-    localStorage.clear();
     this.setState({ favorite: this.state.favorite === true ? false : true })
     setTimeout(() => this.saveToStorage(), 1000);
   }
@@ -67,8 +68,9 @@ class FullArtistProfile extends React.Component<any, any> {
       name: this.state.artist,
       id: this.state.id
     }
+    // ADD NEW ITEM TO FAVORITES
     if (this.state.favorite === true) {
-      if (localStorage.getItem('favorites')) {
+      if (localStorage.getItem('favorites') != null) {
         const oldArray = localStorage.getItem('favorites');
         const oldArrayParse = oldArray !== null ? JSON.parse(oldArray) : null;
         if (!oldArrayParse.includes(artistObj)) {
@@ -82,12 +84,13 @@ class FullArtistProfile extends React.Component<any, any> {
         localStorage.setItem('favorites', JSON.stringify([artistObj]))
       }
     }
+    // REMOVE ITEM FROM FAVORITES
     else {
       if (localStorage.getItem('favorites')) {
         const oldArray = localStorage.getItem('favorites');
         const oldArrayParse = oldArray !== null ? JSON.parse(oldArray) : null;
         const index = oldArrayParse.indexOf(artistObj);
-        if (index !== -1) {
+        if (index === -1) {
           oldArrayParse.splice(index, 1);
           localStorage.setItem('favorites', JSON.stringify(oldArrayParse));
         }
@@ -96,24 +99,29 @@ class FullArtistProfile extends React.Component<any, any> {
   }
 
   render() {
-    let post = <p style={{ textAlign: 'center' }}>Loading...!</p>;
+    let artistInfo = <p className='center'>Loading...!</p>;
     if (this.state.artist) {
-      post = (
+      artistInfo = (
         <div>
-          <h3 style={{ textAlign: 'center' }}>{this.state.artist}</h3>
-          <div onClick={() => this.setFavoriteHandler()}>
-            <FavoriteIcon
-              style={{ color: this.state.favorite === true ? red[500] : red[100] }} />
-            {this.state.favorite === true ? <p>Remove Favorite</p> : <p>Save as Favorite</p>}
-          </div>
-          <Link to='/' onClick={this.props.click}>Back</Link>
+          <h3 className='center'>{this.state.artist}</h3>
         </div>
       )
     }
 
+    let favoriteButton = <div> <FavoriteIcon style={{ color: red[100] }} /> <p>Save as Favorite</p></div>
+    if (this.state.favorite === true) {
+      favoriteButton = <div><FavoriteIcon style={{ color: red[500] }} /> <p>Remove Favorite</p> </div>
+    }
+
     return (
       <div>
-        {post}
+        {artistInfo}
+        <div className='artistOptions'>
+          <Button className='favoriteToggleBtn' variant="outlined" onClick={() => this.setFavoriteHandler()}>
+            {favoriteButton}
+          </Button>
+        </div>
+        <Link to='/' onClick={this.props.click}>Back</Link>
         <Route exact path="/" component={Home} onClick={this.props.click} />
       </div>
     )

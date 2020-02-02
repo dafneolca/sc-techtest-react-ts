@@ -4,12 +4,11 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import { Link, Route } from 'react-router-dom';
-import FullArtistProfile from '../FullArtistProfile/FullArtistProfile';
+import { Link, Route, Switch, withRouter, BrowserRouter } from 'react-router-dom';
+import FullArtistProfile from '../FullArtistProfile/FullArtistProfile'
+import './Sidebar.css';
+import { render } from '@testing-library/react';
 
 const useStyles = makeStyles({
   list: {
@@ -20,7 +19,10 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TemporaryDrawer() {
+
+
+const Sidebar = (props: any) => {
+  // export default function TemporaryDrawer() {
   const classes = useStyles();
   const [state, setState] = React.useState({ left: false });
 
@@ -50,22 +52,36 @@ export default function TemporaryDrawer() {
     >
       <List>
         {favoritesArray?.map((artist: any) => (
-          <Link to={{ pathname: artist.id, state: { name: artist.name } }} key={artist.id}>
+          <Link to={
+            { pathname: artist.id, state: { name: artist.name, id: artist.id } }}
+            key={artist.id}>
+            <Route
+              exact
+              path=':/id'
+              component={FullArtistProfile}
+            />
             <ListItem button key={artist.id}>
               <ListItemText primary={artist.name} />
             </ListItem>
           </Link>
         ))}
       </List>
-    </div>
+    </div >
   );
 
   return (
     <div>
-      <Button onClick={toggleDrawer('left', true)}>Favorites</Button>
+      <div className='favoritesButton'>
+        <Button variant="outlined" onClick={toggleDrawer('left', true)}>Favorites</Button>
+      </div>
       <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
         {sideList('left')}
       </Drawer>
+      {/* <Switch> */}
+      {/* <Route exact path="/:id" component={FullArtistProfile} /> */}
+      {/* </Switch> */}
     </div>
   );
 }
+
+export default Sidebar;

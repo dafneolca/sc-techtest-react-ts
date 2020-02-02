@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Artists.css';
 import { Link } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ArtistDetail from '../ArtistDetail/ArtistDetail';
-import FullArtistProfile from '../FullArtistProfile/FullArtistProfile'
+import Button from '@material-ui/core/Button';
 
 import ApolloClient, { gql } from 'apollo-boost';
 import Grid from '@material-ui/core/Grid';
 
-import { Breadcrumbs } from '@material-ui/core';
-
-import Home from '../Home';
 
 class Artists extends React.Component<any, any> {
 
@@ -53,14 +49,7 @@ class Artists extends React.Component<any, any> {
     })
   }
 
-  selectArtistHandler(id: string) {
-    console.log('clicked')
-    console.log(id)
-  }
-
   goBackHandler() {
-    console.log('go back handler')
-    console.log(this.props)
     this.props.history.goBack()
   }
 
@@ -79,8 +68,7 @@ class Artists extends React.Component<any, any> {
               key={id}
               id={id}
               name={artist['name']}
-              {...this.props}
-              clicked={() => this.selectArtistHandler(id)} />
+              {...this.props} />
           </Link>
         </Grid>
       )
@@ -88,17 +76,12 @@ class Artists extends React.Component<any, any> {
 
     return (
       <div>
-        {/* <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" to="/">Home</Link>
-          <Link color="inherit" to="/getting-started/installation/">{this.state.userSearchResult}</Link>
-        </Breadcrumbs> */}
-        <div onClick={this.props.clicked}>Back to Search</div>
+        <div className='leftAlign'>
+          <Button variant="outlined" onClick={this.props.clicked}>Back to Search</Button>
+        </div>
         <h3>Results for {this.state.userSearchResult}</h3>
-        <section className="Posts">
+        <section>
           {artistResults}
-          <Switch>
-            <Route exact path="/:id" component={FullArtistProfile} />
-          </Switch>
         </section>
       </div>
     );

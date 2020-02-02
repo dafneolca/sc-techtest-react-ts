@@ -70,3 +70,10 @@ Of course, you can add other parts that you see fit.
 - For styling, use any framework / library you want
   (styled-component, grommet, material, ...)
 - if you're aware of this, you can use React Hooks
+
+
+
+## TODO:
+
+1. Bugfix: Routes from sidebar not rendering the correct component / sidebar not sending correct data to FullArtistProfile
+2. Bugfix: Favorites do not store favorite variable on FullArtistProfile component
