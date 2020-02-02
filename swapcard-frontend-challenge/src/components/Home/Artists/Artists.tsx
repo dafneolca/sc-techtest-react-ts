@@ -8,6 +8,8 @@ import FullArtistProfile from '../FullArtistProfile/FullArtistProfile'
 import ApolloClient, { gql } from 'apollo-boost';
 import Grid from '@material-ui/core/Grid';
 
+import { Breadcrumbs } from '@material-ui/core';
+
 import Home from '../Home';
 
 class Artists extends React.Component<any, any> {
@@ -86,6 +88,10 @@ class Artists extends React.Component<any, any> {
 
     return (
       <div>
+        {/* <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" to="/">Home</Link>
+          <Link color="inherit" to="/getting-started/installation/">{this.state.userSearchResult}</Link>
+        </Breadcrumbs> */}
         <div onClick={this.props.clicked}>Back to Search</div>
         <h3>Results for {this.state.userSearchResult}</h3>
         <section className="Posts">

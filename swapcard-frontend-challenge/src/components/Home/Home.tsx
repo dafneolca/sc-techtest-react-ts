@@ -1,14 +1,10 @@
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
-
+import { Route, Switch, withRouter, Link } from 'react-router-dom';
 import './Home.css';
 import Artists from './Artists/Artists';
 import FullArtistProfile from './FullArtistProfile/FullArtistProfile';
 import { Breadcrumbs } from '@material-ui/core';
-
 import Sidebar from './Sidebar/Sidebar';
-
-
 
 class Home extends React.Component<any, any> {
 
@@ -21,18 +17,6 @@ class Home extends React.Component<any, any> {
     const searchResult = event.target.children[0].value
     this.setState({ userSearch: searchResult });
   }
-
-
-  // breadCrumbs = () => {
-  //   return (
-  //     <div>
-  //       <Breadcrumbs aria-label="breadcrumb">
-  //         <Link color="inherit" to="/">Home</Link>
-  //         <Link color="inherit" to="/getting-started/installation/">{this.state.userSearch}</Link>
-  //       </Breadcrumbs>
-  //     </div>
-  //   )
-  // }
 
   searchInput = () => {
     return (
@@ -77,8 +61,33 @@ class Home extends React.Component<any, any> {
   }
 
   render() {
+    let breadCrumbs = (
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" to="/">Home</Link>
+      </Breadcrumbs>
+    )
+
+    if (this.state.userSearch !== '' && this.props.location.pathname === "/") {
+      breadCrumbs = (
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" to="/" onClick={this.resetSearchHandler}>Home</Link>
+          <Link color="inherit" to="/">Search Results</Link>
+        </Breadcrumbs>
+      )
+    }
+
+    if (this.state.userSearch !== '' && this.props.location.pathname !== "/") {
+      breadCrumbs = (
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" to="/" onClick={this.resetSearchHandler}>Home</Link>
+          <Link color="inherit" to="/">Search Results</Link>
+          <Link color="inherit" to={this.props.location.pathname}>{this.state.userSearch}</Link>
+        </Breadcrumbs>
+      )
+    }
     return (
       <div>
+        {breadCrumbs}
         <Sidebar />
         <Switch>
           <Route exact path="/" component={this.state.userSearch !== '' ? this.searchResult : this.welcomeScreen} />

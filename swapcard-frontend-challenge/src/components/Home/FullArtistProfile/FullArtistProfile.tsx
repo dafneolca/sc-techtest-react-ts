@@ -6,6 +6,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import { red } from '@material-ui/core/colors';
 
 
+
 class FullArtistProfile extends React.Component<any, any> {
 
   state = {
